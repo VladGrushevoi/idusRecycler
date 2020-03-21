@@ -22,3 +22,4 @@ data class ChartAlbum(
     override val artist: Artist,
     override val trackList_url: String
 ) : IAlbum
+
