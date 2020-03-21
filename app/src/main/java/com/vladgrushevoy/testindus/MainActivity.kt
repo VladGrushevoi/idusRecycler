@@ -3,45 +3,44 @@ package com.vladgrushevoy.testindus
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.vladgrushevoy.testindus.Adapter.VerticalRVAdapter
-import com.vladgrushevoy.testindus.Models.HorizantalModel
-import com.vladgrushevoy.testindus.Models.VerticalModel
+import com.vladgrushevoy.testindus.adapter.VerticalRVAdapter
+import com.vladgrushevoy.testindus.models.*
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-
-    lateinit var verticalRecyclerView : RecyclerView
-    lateinit var adapter: VerticalRVAdapter
-    lateinit var arrayList: List<VerticalModel>
+    private val adapter by lazy { VerticalRVAdapter(this, arrayListVertical) }
+    private val arrayListVertical by lazy { mutableListOf<VerticalModel>() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        verticalRecyclerView = findViewById(R.id.RVParent)
-        verticalRecyclerView.setHasFixedSize(true)
-
-        verticalRecyclerView.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL, false)
-
-        adapter = VerticalRVAdapter(this, arrayList)
-        verticalRecyclerView.adapter = adapter
-
+        parent_recycler_view.apply {
+            layoutManager =
+                LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL, false)
+            adapter = this@MainActivity.adapter
+        }
         setData()
     }
 
     private fun setData() {
-        for (i in 1..5){
-            val verticalModel: VerticalModel = VerticalModel()
-            verticalModel.title =  "Tittle: $i"
-            val arrayListHorizontal: ArrayList<HorizantalModel> = ArrayList()
-            for(i in 1..5){
-                val horizontalModel: HorizantalModel = HorizantalModel()
-                horizontalModel.description = "Description: $i"
-                horizontalModel.name = "Name: $i"
+        arrayListVertical.add(VerticalModel("Chart tracks", setFakeChartTracks()))
+        arrayListVertical.add(VerticalModel("Chart albums", setFakeChartAlbums()))
+        adapter.notifyDataSetChanged()
+    }
 
-                arrayListHorizontal.add(horizontalModel)
-            }
-            verticalModel.arrayList = arrayListHorizontal
+    private fun setFakeChartTracks(): ChartTracksData {
+        val array = mutableListOf<ChartTrack>()
+        for (i in 1..5) {
+            array.add(ChartTrack(i.toLong(), "Title $i", "preview_url", i))
         }
+        return ChartTracksData(array)
+    }
+
+    private fun setFakeChartAlbums(): AlbumChartData {
+        val array = mutableListOf<ChartAlbum>()
+        for (i in 1..5) {
+            array.add(ChartAlbum(i.toLong(), "Title $i", "track_cover_url", Artist(1, "", ""), ""))
+        }
+        return AlbumChartData(array)
     }
 }
