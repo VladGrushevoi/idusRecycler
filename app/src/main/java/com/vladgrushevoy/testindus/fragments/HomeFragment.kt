@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.vladgrushevoy.testindus.listener.OnItemListener
 import com.vladgrushevoy.testindus.R
 import com.vladgrushevoy.testindus.adapter.VerticalRVAdapter
+import com.vladgrushevoy.testindus.models.IAlbum
+import com.vladgrushevoy.testindus.models.ITrack
 import com.vladgrushevoy.testindus.models.VerticalModel
 import kotlinx.android.synthetic.main.fragment_home.*
 
@@ -58,7 +60,19 @@ class HomeFragment : BaseFragment(), OnItemListener {
         })
     }
 
-    override fun onClickItem(position: Int) {
-        Toast.makeText(activity, position.toString(), Toast.LENGTH_LONG).show()
+    override fun onClickItem(response: ITrack) {
+        Toast.makeText(
+            activity,
+            response.toString(),
+            Toast.LENGTH_LONG
+        ).show()
+    }
+
+    override fun onClickItem(response: IAlbum) {
+        Toast.makeText(
+            activity,
+            response.toString(),
+            Toast.LENGTH_LONG
+        ).show()
     }
 }
