@@ -1,7 +1,10 @@
 package com.vladgrushevoy.testindus.listener
 
-import java.io.Serializable
+import com.vladgrushevoy.testindus.models.IAlbum
+import com.vladgrushevoy.testindus.models.ITrack
 
-interface OnItemListener : Serializable {
-    fun onClickItem(position: Int)
+interface OnItemListener {
+    fun onClickItem(response: ITrack)
+
+    fun onClickItem(response: IAlbum)
 }

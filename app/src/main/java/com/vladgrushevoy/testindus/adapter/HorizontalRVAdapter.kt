@@ -4,12 +4,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.vladgrushevoy.testindus.listener.OnItemListener
 import com.vladgrushevoy.testindus.R
-import com.vladgrushevoy.testindus.models.*
+import com.vladgrushevoy.testindus.listener.OnItemListener
+import com.vladgrushevoy.testindus.models.AlbumChartData
+import com.vladgrushevoy.testindus.models.ChartTracksData
+import com.vladgrushevoy.testindus.models.IRecyclerHorizontalModel
 
 class HorizontalRVAdapter(
-    private var item: IRecyclerHorizontalModel,
+    val item: IRecyclerHorizontalModel,
     private val onItemListener: OnItemListener
 ) :
     Adapter<ViewHolder>() {
@@ -23,7 +25,7 @@ class HorizontalRVAdapter(
                         R.layout.item_horizontal,
                         parent,
                         false
-                    ), onItemListener
+                    )
                 )
             }
             TYPE_CHART_ALBUMS -> {
@@ -32,7 +34,7 @@ class HorizontalRVAdapter(
                         R.layout.item_horizontal,
                         parent,
                         false
-                    ), onItemListener
+                    )
                 )
             }
         }
@@ -55,10 +57,10 @@ class HorizontalRVAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when (holder.itemViewType) {
             TYPE_CHART_TRACKS -> {
-                (holder as ChartTrackViewHolder).bind(item)
+                (holder as ChartTrackViewHolder).bind(item, onItemListener)
             }
             TYPE_CHART_ALBUMS -> {
-                (holder as ChartAlbumViewHolder).bind(item)
+                (holder as ChartAlbumViewHolder).bind(item, onItemListener)
             }
         }
     }

@@ -1,14 +1,12 @@
 package com.vladgrushevoy.testindus.adapter
 
 import android.view.View
+import android.widget.AdapterView.OnItemClickListener
 import androidx.recyclerview.widget.RecyclerView
 import com.vladgrushevoy.testindus.listener.OnItemListener
 
-abstract class BaseViewHolder(view: View, onItemListener: OnItemListener) :
+abstract class BaseViewHolder(view: View) :
     RecyclerView.ViewHolder(view) {
-    protected val itemListener = view.setOnClickListener {
-        onItemListener.onClickItem(adapterPosition)
-    }
 
-    abstract fun bind(response: Any)
+    abstract fun bind(response: Any, clickListener: OnItemListener)
 }
