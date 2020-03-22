@@ -1,83 +1,64 @@
 package com.vladgrushevoy.testindus.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.vladgrushevoy.testindus.listener.OnItemListener
 import com.vladgrushevoy.testindus.R
 import com.vladgrushevoy.testindus.models.*
 
 class HorizontalRVAdapter(
-    private var context: Context,
-    private var verticalModel: VerticalModel
+    private var item: IRecyclerHorizontalModel,
+    private val onItemListener: OnItemListener
 ) :
-    Adapter<HorizontalRVAdapter.HorizontalRVViewHolder>() {
-    private val adapter by lazy { verticalModel.item.data }
+    Adapter<ViewHolder>() {
 
-    inner class HorizontalRVViewHolder(itemView: View) : ViewHolder(itemView) {
-        var textViewTitle: TextView = itemView.findViewById(R.id.txtTitleHorizontal)
-        var imageViewThumb: ImageView = itemView.findViewById(R.id.ivThumb)
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HorizontalRVViewHolder {
-        var view: HorizontalRVViewHolder? = null
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        var view: BaseViewHolder? = null
         when (viewType) {
             TYPE_CHART_TRACKS -> {
-                view = HorizontalRVViewHolder(
+                view = ChartTrackViewHolder(
                     LayoutInflater.from(parent.context).inflate(
                         R.layout.item_horizontal,
                         parent,
                         false
-                    )
+                    ), onItemListener
                 )
             }
             TYPE_CHART_ALBUMS -> {
-                view = HorizontalRVViewHolder(
+                view = ChartAlbumViewHolder(
                     LayoutInflater.from(parent.context).inflate(
                         R.layout.item_horizontal,
                         parent,
                         false
-                    )
+                    ), onItemListener
                 )
             }
         }
-
         return view!!
     }
 
     override fun getItemCount(): Int {
-        return adapter.size
+        return item.data.size
     }
 
     override fun getItemViewType(position: Int): Int {
-        if (verticalModel.item is ChartTracksData) {
+        if (item is ChartTracksData) {
             return TYPE_CHART_TRACKS
-        } else if (verticalModel.item is AlbumChartData) {
+        } else if (item is AlbumChartData) {
             return TYPE_CHART_ALBUMS
         }
         return -1
     }
 
-    override fun onBindViewHolder(holder: HorizontalRVViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when (holder.itemViewType) {
             TYPE_CHART_TRACKS -> {
-                val horizontalModel = adapter[position] as ChartTrack
-                holder.textViewTitle.text = horizontalModel.title
-                holder.imageViewThumb.setOnClickListener {
-                    Toast.makeText(context, horizontalModel.preview, Toast.LENGTH_SHORT).show()
-                }
+                (holder as ChartTrackViewHolder).bind(item)
             }
             TYPE_CHART_ALBUMS -> {
-                val horizontalModel = adapter[position] as ChartAlbum
-                holder.textViewTitle.text = horizontalModel.title
-                holder.imageViewThumb.setOnClickListener {
-                    Toast.makeText(context, horizontalModel.trackList_url, Toast.LENGTH_SHORT).show()
-                }
+                (holder as ChartAlbumViewHolder).bind(item)
             }
         }
     }
