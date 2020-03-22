@@ -1,5 +1,5 @@
 package com.vladgrushevoy.testindus.models
 
-interface IRecyclerVerticalModel {
+interface IRecyclerHorizontalModel {
     val data: MutableList<*>
 }
